@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Security Definitions</title>
+<style type="text/css">
+#consoleLog {
+	height: 300px;
+	overflow-y: scroll;
+}
+
+#consoleLog p {
+  font-size: 10px;
+	line-height: 125%;
+}
+
+#statusText p {
+  color: blue;
+  font-size: 11px;
+}
+</style>
+</head>
+<body>
+	<h2>Security Definitions</h2>
+	<em>Websockets demonstration using FIX messages</em><br>
+	<hr>
+	<br>
+
+	<div id="secdef">
+		<div id="secdef-config" style="float: left;">
+			<button class="secdef-button" id="connect" onClick="connect();">Connect</button>
+			<button class="secdef-button" id="disconnect" onClick="disconnect();">Disconnect</button>
+			<br><br>
+			<select id="securityRequestTypeSelect">
+ 				<option value="symbol">Symbol</option>
+   				<option value="securityType">Security Type</option>
+   				<option value="cfiCode">CFI Code</option>
+  				<option value="product" selected>Product</option>
+  				<option value="securityGroup" selected>Security Group</option>
+  				<option value="tradingSessionID">Trading Session ID</option>
+  				<option value="marketID">Market ID</option>		
+  				<option value="marketSegmentID">Market Segment ID</option>		
+  				<option value="securityExchange">Security Exchange</option>	
+  				<option value="allSecurities">All Securities</option>	
+			</select>
+			<br><br>
+			<input class="draw-border" id="key" style="width: 150px; ">
+			<br> 
+			<br><br>
+  			<input type="radio" name="subscriptionRequestType" value="Snapshot" checked> Snapshot
+  			<input type="radio" name="subscriptionRequestType" value="SnapshotAndUpdates"> Subscribe
+  			<input type="radio" name="subscriptionRequestType" value="DisablePreviousSnapshot"> Unsubscribe
+			<br><br>
+			<button class="secdef-button" id="request" onClick="request();">Request</button>
+			<br>
+			<div id="statusText"></div>
+		</div>
+		<div id="secdef-log"
+			style="float: left; margin-left: 20px; padding-left: 20px; width: 350px; border-left: solid 1px #cccccc;">
+			<button class="secdef-button" id="clear">Clear</button>
+			<button class="secdef-button" id="copy">Copy</button>
+				<br><br>	
+			<div id="consoleLog"></div>
+		</div>
+	</div>
+
+	<script type='text/javascript' src='websocket.js'></script>
+	
+	<script type="text/javascript">
+		var path = "SecurityDefinitions";
+		var consoleLog;
+		var connectButton;
+		var disconnectButton;
+		var requestButton;
+		var clearButton;
+		var copyButton;
+		var securityRequestTypeSelect;
+		var key;
+		var statusText;
+		var securityReqID = "1";
+
+		function init() {
+			consoleLog = document.getElementById("consoleLog");
+			connectButton = document.getElementById("connect");
+			disconnectButton = document.getElementById("disconnect");
+			disconnectButton.disabled = true;
+			securityRequestTypeSelect = document.getElementById("securityRequestTypeSelect");
+			key = document.getElementById("key");
+			requestButton = document.getElementById("request");
+			requestButton.disabled = true;
+			clearButton = document.getElementById("clear");
+			clearButton.onclick = clear;
+			copyButton = document.getElementById("copy");
+			copyButton.onclick = copyToClipboard;
+			statusText = document.getElementById("statusText");
+			
+			updateStatus("Disconnected");
+		}
+
+		function connect() {
+			ws.init(path, onMessage, onError,
+					onOpen, onClose);
+		}
+		
+		function disconnect() {
+			ws.disconnect();		
+		}
+
+		function request() {
+			ws.send(buildMessage());
+			var nextId = Number(securityReqID);
+			++nextId;
+			securityReqID = nextId.toString();
+		}
+
+		
+		function buildMessage() {
+			var subscriptionRequestType = document.querySelector('input[name="subscriptionRequestType"]:checked').value;
+			var message;
+			switch (securityRequestTypeSelect.value) {
+			case "symbol":
+				message = { "symbol": key.value, "securityReqID": securityReqID, "subscriptionRequestType": subscriptionRequestType,
+				"securityRequestType": "Symbol"};
+				break;
+			case "product":
+				message = { "product": key.value, "securityReqID": securityReqID, "subscriptionRequestType": subscriptionRequestType,
+				"securityRequestType": "Product"};
+				break;
+			case "securityGroup":
+				message = { "securityGroup": key.value, "securityReqID": securityReqID, "subscriptionRequestType": subscriptionRequestType,
+				"securityRequestType": "Product"};
+				break;
+			case "tradingSessionID":
+				message = { "tradingSessionID": key.value, "securityReqID": securityReqID, "subscriptionRequestType": subscriptionRequestType,
+				"securityRequestType": "TradingSessionID"};
+				break;
+			case "marketSegmentID":
+				message = { "marketSegmentID": key.value, "securityReqID": securityReqID, "subscriptionRequestType": subscriptionRequestType,
+				"securityRequestType": "MarketIDOrMarketID"};
+				break;
+			case "marketID":
+				message = { "marketID": key.value, "securityReqID": securityReqID, "subscriptionRequestType": subscriptionRequestType,
+				"securityRequestType": "MarketIDOrMarketID"};
+				break;
+			case "securityExchange":
+				message = { "securityExchange": key.value, "securityReqID": securityReqID, "subscriptionRequestType": subscriptionRequestType,
+				"securityRequestType": "MarketIDOrMarketID"};
+				break;
+			case "securityType":
+				message = { "securityType": key.value, "securityReqID": securityReqID, "subscriptionRequestType": subscriptionRequestType,
+				"securityRequestType": "SecurityTypeAndOrCFICode"};
+				break;
+			case "cfiCode":
+				message = { "cfiCode": key.value, "securityReqID": securityReqID, "subscriptionRequestType": subscriptionRequestType,
+				"securityRequestType": "SecurityTypeAndOrCFICode"};
+				break;			}
+			return JSON.stringify(message);
+		}
+			
+		function onOpen(evt) {
+			updateStatus("Connected");
+			connectButton.disabled = true;
+			disconnectButton.disabled = false;
+			requestButton.disabled = false;
+		}
+
+		function onClose(evt) {
+			updateStatus("Disconnected");
+			connectButton.disabled = false;
+			disconnectButton.disabled = true;
+			requestButton.disabled = true;
+		}
+
+		function onMessage(evt) {
+			writeToScreen(evt.data);
+		}
+
+		function onError(evt) {
+			updateStatus('<span style="color: red;">ERROR:</span> ' + evt.data);
+		}
+
+		function writeToScreen(message) {
+			var pre = document.createElement("p");
+			pre.style.wordWrap = "break-word";
+			pre.innerHTML = message;
+			consoleLog.appendChild(pre);
+		}
+		
+		function updateStatus(message) {
+			var pre = document.createElement("p");
+			pre.style.wordWrap = "break-word";
+			pre.innerHTML = message;
+			if (statusText.childElementCount > 0) {
+				statusText.removeChild(statusText.lastChild);
+			}
+			statusText.appendChild(pre);
+		}
+		
+		function clear() {
+			while (consoleLog.childNodes.length > 0)
+			{
+				consoleLog.removeChild(consoleLog.lastChild);
+			}
+		}
+
+		function copyToClipboard() {
+			var text = "";
+			for (i = 0; i <	consoleLog.childNodes.length; i++) {
+				if (i > 0) {
+					text = text.concat(" ");
+				}
+				text = text.concat(consoleLog.childNodes[i].firstChild.innerText);
+			}
+		    window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+		  }
+		
+		window.addEventListener("load", init, false);
+	</script>
+
+</body>
+</html>
