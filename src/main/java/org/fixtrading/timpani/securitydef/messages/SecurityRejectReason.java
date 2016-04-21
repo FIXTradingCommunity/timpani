@@ -15,7 +15,7 @@ public enum SecurityRejectReason {
               7), InvalidOrMissingDataOnFutureLeg(8), InvalidOrMissingDataOnFXLeg(
                   10), InvalidLegPriceSpecified(11), InvalidInstrumentStructureSpecified(12);
 
-  private static EnumSet<SecurityRejectReason> valueSet = EnumSet.allOf(SecurityRejectReason.class);
+  private static final EnumSet<SecurityRejectReason> valueSet = EnumSet.allOf(SecurityRejectReason.class);
 
   public static SecurityRejectReason getValue(int code) {
     Iterator<SecurityRejectReason> iter = valueSet.iterator();
@@ -30,7 +30,7 @@ public enum SecurityRejectReason {
 
   private final int code;
 
-  private SecurityRejectReason(int code) {
+  SecurityRejectReason(int code) {
     this.code = code;
   }
 

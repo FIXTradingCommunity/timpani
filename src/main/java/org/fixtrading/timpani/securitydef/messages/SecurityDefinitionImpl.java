@@ -60,14 +60,14 @@ public class SecurityDefinitionImpl implements SecurityDefinition {
     }
   }
 
-  private final String msgType = "SecurityDefintion";
+  private final String msgType = "SecurityDefinition";
 
   private String cfiCode;
   private double contractMultiplier;
   private String currency;
-  private ArrayList<InstrAttribImpl> instrAttribGrp = new ArrayList<>();
+  private final ArrayList<InstrAttribImpl> instrAttribGrp = new ArrayList<>();
   private LocalDateTime lastUpdateTime;
-  private ArrayList<MarketSegmentImpl> marketSegmentGrp = new ArrayList<>();
+  private final ArrayList<MarketSegmentImpl> marketSegmentGrp = new ArrayList<>();
   private String matchAlgorithm;
   private String MaturityMonthYear;
   private int maxTradeVol;

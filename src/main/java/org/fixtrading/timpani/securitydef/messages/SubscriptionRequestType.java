@@ -12,7 +12,7 @@ import java.util.Iterator;
 public enum SubscriptionRequestType {
   Snapshot('0'), SnapshotAndUpdates('1'), DisablePreviousSnapshot('2');
 
-  private static EnumSet<SubscriptionRequestType> valueSet =
+  private static final EnumSet<SubscriptionRequestType> valueSet =
       EnumSet.allOf(SubscriptionRequestType.class);
 
   public static SubscriptionRequestType getValue(char code) {
@@ -26,9 +26,9 @@ public enum SubscriptionRequestType {
     return null;
   }
 
-  private char code;
+  private final char code;
 
-  private SubscriptionRequestType(char code) {
+  SubscriptionRequestType(char code) {
     this.code = code;
   }
 

@@ -78,7 +78,7 @@ public class TagValueSourceBulkLoader {
     }
   }
 
-  private Consumer<? super ByteBuffer> fieldAction = new Consumer<ByteBuffer>() {
+  private final Consumer<? super ByteBuffer> fieldAction = new Consumer<ByteBuffer>() {
     
     private InstrAttribImpl instrAttribImpl;
     private MarketSegmentImpl marketSegmentImpl;
@@ -93,7 +93,7 @@ public class TagValueSourceBulkLoader {
           break;
         case 22:
           SecurityIDSource securityIDSource =
-              SecurityIDSource.getValue(Character.valueOf((char) value[0]));
+              SecurityIDSource.getValue((char) value[0]);
           securityDefinition.setSecurityIDSource(securityIDSource);
           break;
         case 23:
@@ -212,12 +212,12 @@ public class TagValueSourceBulkLoader {
   private int insertions;
 
   // handle format like '20160403172000000000'
-  private DateTimeFormatter instantParser = new DateTimeFormatterBuilder().appendValue(YEAR, 4)
+  private final DateTimeFormatter instantParser = new DateTimeFormatterBuilder().appendValue(YEAR, 4)
       .appendValue(MONTH_OF_YEAR, 2).appendValue(DAY_OF_MONTH, 2).appendValue(HOUR_OF_DAY, 2)
       .appendValue(MINUTE_OF_HOUR, 2).appendValue(SECOND_OF_MINUTE, 2).optionalStart()
       .appendValue(MICRO_OF_SECOND, 6).toFormatter();
 
-  private Consumer<? super ByteBuffer> messageAction = new Consumer<ByteBuffer>() {
+  private final Consumer<? super ByteBuffer> messageAction = new Consumer<ByteBuffer>() {
 
     @Override
     public void accept(ByteBuffer buffer) {

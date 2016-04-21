@@ -12,7 +12,7 @@ import java.util.Iterator;
 public enum PutOrCall {
   Call(1), Put(0);
 
-  private static EnumSet<PutOrCall> valueSet = EnumSet.allOf(PutOrCall.class);
+  private static final EnumSet<PutOrCall> valueSet = EnumSet.allOf(PutOrCall.class);
 
   public static PutOrCall getValue(int code) {
     Iterator<PutOrCall> iter = valueSet.iterator();
@@ -27,7 +27,7 @@ public enum PutOrCall {
 
   private final int code;
 
-  private PutOrCall(int code) {
+  PutOrCall(int code) {
     this.code = code;
   }
 

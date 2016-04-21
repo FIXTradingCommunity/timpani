@@ -16,6 +16,9 @@ Request and response messages are encoded in JavaScript Object Notation (JSON). 
 #### Transport layer
 Messages between web client and server are conveyed by a WebSocket transport. The protocol enhances HTTP to leave the TCP connection open after the initial response is delivered. Then messages can be fed to the client asynchronously. This is useful for security definitions since result sets can be huge -- better to pipeline delivery of results rather than collecting it for one synchronous dump. Furthermore, some markets create new instruments intra-day. Asynchronous transport supports unsolicited push to the client.
 
+WebSocket protocol is supported by all popular browers. In this project, the server 
+implementation is provided by Jetty.
+
 ### Datastore
 For this implementation, security definitions are stored in MongoDB, a popular, open-source package. It stores records as BSON documents. BSON is an performance-enhanced JSON equivalent.
 

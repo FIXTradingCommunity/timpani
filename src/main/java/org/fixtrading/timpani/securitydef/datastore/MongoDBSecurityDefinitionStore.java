@@ -65,7 +65,7 @@ public class MongoDBSecurityDefinitionStore implements SecurityDefinitionStore {
     public int getCount() {
       return count;
     }
-  };
+  }
 
   private static final String DATABASE_NAME = "refdata";
   private static final String SECDEF_COLLECTION_NAME = "secdef";
@@ -98,7 +98,7 @@ public class MongoDBSecurityDefinitionStore implements SecurityDefinitionStore {
       SecurityDefinitionRequest securityDefinitionRequest) {
 
     CompletableFuture<SecurityDefinitionStore> future =
-        new CompletableFuture<SecurityDefinitionStore>();
+            new CompletableFuture<>();
 
     // todo: handle different request types
     collection.deleteMany(eq("symbol", securityDefinitionRequest.getSymbol()),
@@ -116,7 +116,7 @@ public class MongoDBSecurityDefinitionStore implements SecurityDefinitionStore {
   public CompletableFuture<SecurityDefinitionStore> insert(
       Collection<SecurityDefinition> securityDefinitions) {
     CompletableFuture<SecurityDefinitionStore> future =
-        new CompletableFuture<SecurityDefinitionStore>();
+            new CompletableFuture<>();
 
     List<Document> docs = securityDefinitions.stream().map(s -> {
       final String json = jsonCodec.encode(s);
@@ -136,7 +136,7 @@ public class MongoDBSecurityDefinitionStore implements SecurityDefinitionStore {
   @Override
   public CompletableFuture<SecurityDefinitionStore> insert(SecurityDefinition securityDefinition) {
     CompletableFuture<SecurityDefinitionStore> future =
-        new CompletableFuture<SecurityDefinitionStore>();
+            new CompletableFuture<>();
 
     final String json = jsonCodec.encode(securityDefinition);
     // convert json to bson
@@ -172,7 +172,7 @@ public class MongoDBSecurityDefinitionStore implements SecurityDefinitionStore {
   public CompletableFuture<Integer> select(SecurityDefinitionRequest securityDefinitionRequest,
       Consumer<? extends SecurityDefinition> consumer) {
 
-    CompletableFuture<Integer> future = new CompletableFuture<Integer>();
+    CompletableFuture<Integer> future = new CompletableFuture<>();
 
     Bson filter = null;
     SecurityRequestType securityRequestType = securityDefinitionRequest.getSecurityRequestType();
@@ -240,15 +240,11 @@ public class MongoDBSecurityDefinitionStore implements SecurityDefinitionStore {
     SecurityDefinitionBlock block =
         new SecurityDefinitionBlock((Consumer<SecurityDefinitionImpl>) consumer);
 
-    SingleResultCallback<Void> callback = new SingleResultCallback<Void>() {
-
-      @Override
-      public void onResult(Void result, Throwable t) {
-        if (t == null) {
-          future.complete(block.getCount());
-        } else {
-          future.completeExceptionally(t);
-        }
+    SingleResultCallback<Void> callback = (result, t) -> {
+      if (t == null) {
+        future.complete(block.getCount());
+      } else {
+        future.completeExceptionally(t);
       }
     };
 
@@ -261,7 +257,7 @@ public class MongoDBSecurityDefinitionStore implements SecurityDefinitionStore {
   @Override
   public CompletableFuture<SecurityDefinitionStore> truncate() {
     CompletableFuture<SecurityDefinitionStore> future =
-        new CompletableFuture<SecurityDefinitionStore>();
+            new CompletableFuture<>();
 
     collection.drop((Void result, final Throwable t) -> {
       if (t == null) {

@@ -25,7 +25,7 @@ import org.fixtrading.timpani.securitydef.SecurityDefinitionService;
  * 
  * @author Don Mendelson
  * 
- * @see https://www.iana.org/assignments/websocket/websocket.xml
+ * @see <a href="https://www.iana.org/assignments/websocket/websocket.xml"/>
  * todo: handle specific subprotocol
  */
 public class SecurityDefinitionCreator implements WebSocketCreator {

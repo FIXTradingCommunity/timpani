@@ -21,7 +21,7 @@ public enum SecurityRequestType {
   AllSecurities(8),
   MarketIDOrMarketID(9);
   
-  private static EnumSet<SecurityRequestType> valueSet = EnumSet.allOf(SecurityRequestType.class);
+  private static final EnumSet<SecurityRequestType> valueSet = EnumSet.allOf(SecurityRequestType.class);
 
   public static SecurityRequestType getValue(int code) {
     Iterator<SecurityRequestType> iter = valueSet.iterator();
@@ -36,7 +36,7 @@ public enum SecurityRequestType {
 
   private final int code;
 
-  private SecurityRequestType(int code) {
+  SecurityRequestType(int code) {
     this.code = code;
   }
 

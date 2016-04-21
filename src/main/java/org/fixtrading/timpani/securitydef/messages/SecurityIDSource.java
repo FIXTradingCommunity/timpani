@@ -21,7 +21,7 @@ public enum SecurityIDSource {
                                   'R'), FinancialInstrumentGlobalIdentifier(
                                       'S'), LegalEntityIdentifier('T'), Synthetic('U');
 
-  private static EnumSet<SecurityIDSource> valueSet = EnumSet.allOf(SecurityIDSource.class);
+  private static final EnumSet<SecurityIDSource> valueSet = EnumSet.allOf(SecurityIDSource.class);
 
   public static SecurityIDSource getValue(char code) {
     Iterator<SecurityIDSource> iter = valueSet.iterator();
@@ -34,9 +34,9 @@ public enum SecurityIDSource {
     return null;
   }
 
-  private char code;
+  private final char code;
 
-  private SecurityIDSource(char code) {
+  SecurityIDSource(char code) {
     this.code = code;
   }
 

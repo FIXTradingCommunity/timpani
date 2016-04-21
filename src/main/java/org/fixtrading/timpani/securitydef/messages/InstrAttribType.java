@@ -29,7 +29,7 @@ public enum InstrAttribType {
                                                               38), VariableRate(
                                                                   5), When(9), ZeroCoupon(2);
 
-  private static EnumSet<InstrAttribType> valueSet = EnumSet.allOf(InstrAttribType.class);
+  private static final EnumSet<InstrAttribType> valueSet = EnumSet.allOf(InstrAttribType.class);
 
   public static InstrAttribType getValue(int code) {
     Iterator<InstrAttribType> iter = valueSet.iterator();
@@ -44,7 +44,7 @@ public enum InstrAttribType {
 
   private final int code;
 
-  private InstrAttribType(int code) {
+  InstrAttribType(int code) {
     this.code = code;
   }
 

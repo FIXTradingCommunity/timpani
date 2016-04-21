@@ -12,7 +12,7 @@ import java.util.Iterator;
 public enum SettlPriceType {
   Final(1), Theoretical(2);
 
-  private static EnumSet<SettlPriceType> valueSet = EnumSet.allOf(SettlPriceType.class);
+  private static final EnumSet<SettlPriceType> valueSet = EnumSet.allOf(SettlPriceType.class);
 
   public static SettlPriceType getValue(int code) {
     Iterator<SettlPriceType> iter = valueSet.iterator();
@@ -27,7 +27,7 @@ public enum SettlPriceType {
 
   private final int code;
 
-  private SettlPriceType(int code) {
+  SettlPriceType(int code) {
     this.code = code;
   }
 

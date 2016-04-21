@@ -14,7 +14,7 @@ public enum SecurityRequestResult {
       2), NotAuthorizedToRetrieveInstrumentData(
           3), InstrumentDataTemporarilyUnavailable(4), RequestForInstrumentDataNotSupported(5);
 
-  private static EnumSet<SecurityRequestResult> valueSet =
+  private static final EnumSet<SecurityRequestResult> valueSet =
       EnumSet.allOf(SecurityRequestResult.class);
 
   public static SecurityRequestResult getValue(int code) {
@@ -30,7 +30,7 @@ public enum SecurityRequestResult {
 
   private final int code;
 
-  private SecurityRequestResult(int code) {
+  SecurityRequestResult(int code) {
     this.code = code;
   }
 

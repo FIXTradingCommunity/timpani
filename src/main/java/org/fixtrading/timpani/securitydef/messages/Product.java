@@ -24,7 +24,7 @@ public enum Product {
       OTHER(12),
       FINANCING(13);
 
-  private static EnumSet<Product> valueSet = EnumSet.allOf(Product.class);
+  private static final EnumSet<Product> valueSet = EnumSet.allOf(Product.class);
 
   public static Product getValue(int code) {
     Iterator<Product> iter = valueSet.iterator();
@@ -39,7 +39,7 @@ public enum Product {
 
   private final int code;
 
-  private Product(int code) {
+  Product(int code) {
     this.code = code;
   }
 

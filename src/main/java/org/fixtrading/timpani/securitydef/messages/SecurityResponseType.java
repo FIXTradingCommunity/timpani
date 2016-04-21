@@ -14,7 +14,7 @@ public enum SecurityResponseType {
       3), ListOfSecuritiesReturnedPerRequest(
           4), RejectSecurityProposal(5), CannotMatchSelectionCriteria(6);
 
-  private static EnumSet<SecurityResponseType> valueSet = EnumSet.allOf(SecurityResponseType.class);
+  private static final EnumSet<SecurityResponseType> valueSet = EnumSet.allOf(SecurityResponseType.class);
 
   public static SecurityResponseType getValue(int code) {
     Iterator<SecurityResponseType> iter = valueSet.iterator();
@@ -29,7 +29,7 @@ public enum SecurityResponseType {
 
   private final int code;
 
-  private SecurityResponseType(int code) {
+  SecurityResponseType(int code) {
     this.code = code;
   }
 
