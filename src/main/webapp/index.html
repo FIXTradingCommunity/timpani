@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -209,7 +209,7 @@
 				if (i > 0) {
 					text = text.concat(" ");
 				}
-				text = text.concat(consoleLog.childNodes[i].firstChild.innerText);
+				text = text.concat(consoleLog.childNodes[i].innerHTML);
 			}
 		    window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
 		  }
